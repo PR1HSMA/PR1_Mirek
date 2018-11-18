@@ -4,7 +4,7 @@ public class Buﬂgeldkatalog {
 
 	public static void main(String[] args) {
 		
-		//variablen anlegen
+		//variablen anlegen 
 		int buﬂgeld = 0 ;
 		int punkte = 0;
 		int fahrverbot = 0;
@@ -17,6 +17,7 @@ public class Buﬂgeldkatalog {
 		boolean equal4;
 		boolean equal5;
 		boolean equal6;
+		boolean equal7;
 		
 		//Array f¸r geschwindigkeit
 		Double [] Vmax = new Double[2000];
@@ -40,6 +41,18 @@ public class Buﬂgeldkatalog {
 					wert = wert + 0.1;
 					//System.out.println(Vmax[i]);
 				}
+				
+				do {
+					
+					System.out.println("Befinden Sie sich noch in der Probezeit?");
+					String probeZeit = sc.nextLine();
+					
+					//pr¸fe ob eingabe richtig ist
+					equal7 = probeZeit.equalsIgnoreCase("j") || probeZeit.equalsIgnoreCase("n");
+					//System.out.println(equal7);
+					
+				} while (equal7 == false);
+				
 				
 				do {
 					
@@ -123,10 +136,10 @@ public class Buﬂgeldkatalog {
 					equal3 = check.equalsIgnoreCase("j") || check.equalsIgnoreCase("n");	
 					//System.out.println(equal3);
 					
-						if (check.equals("N") || (check.equals("n"))){
+						if (check.equalsIgnoreCase("n")){
 							again = false;
 							
-						} else if (check.equals("J") || (check.equals("j"))){
+						} else if (check.equalsIgnoreCase("j")){
 							again = true;
 							wdh = true;
 							String anzahl = "N";
@@ -154,7 +167,8 @@ public class Buﬂgeldkatalog {
 		if (geschwindigkeit <= 100 ) {
 			
 			toleranz = 3.0;
-			Double nachAbzug = geschwindigkeit - toleranz;
+			Double abzug = geschwindigkeit - toleranz;
+			Double nachAbzug = abzug;
 			return nachAbzug;
 			
 		} else {
@@ -168,51 +182,162 @@ public class Buﬂgeldkatalog {
 	}
 	
 	
-	public void rechner(String ort, Double geschwindigkeit, int buﬂgeld, int punkte, int fahrverbot) {	
+	public void rechner(String ort, Double geschwindigkeit, int buﬂgeld, int punkte, int fahrverbot, Double nachAbzug, String anh‰nger, String fahrzeug, String probeZeit, String anzahl, Double abzug) {	
 			
 			try {
-			
-				if (ort.equals("innerorts") || (ort.equals("Innerorts"))) {
+				
+				//geschwindigkeits¸berschreitung nach toleranz 
+				berechneToleranzAbzug();
+				
+				//f¸r pkw, innerorts, ohne anh‰nger
+				if (fahrzeug.equalsIgnoreCase("pkw") && (ort.equalsIgnoreCase("innerorts") && (anh‰nger.equalsIgnoreCase("n")))) {
 					
-					if ((geschwindigkeit > 0 ) && (geschwindigkeit <= 10)) {
+					if ((nachAbzug > 0 ) && (nachAbzug <= 10)) {
 						buﬂgeld = 15;
 						
-					} else if ((geschwindigkeit >= 11) && (geschwindigkeit <= 15)) {
+					} else if ((nachAbzug >= 11) && (nachAbzug <= 15)) {
 						buﬂgeld = 25;
 						 
-					} else if ((geschwindigkeit >= 16) && (geschwindigkeit <= 20)) {
+					} else if ((nachAbzug >= 16) && (nachAbzug <= 20)) {
 						buﬂgeld = 35;
 						
-					} else if ((geschwindigkeit >= 21) && (geschwindigkeit <= 25)) {
+					} else if ((nachAbzug >= 21) && (nachAbzug <= 25)) {
 						buﬂgeld = 80;
 						punkte = 1;
 						
-					} else if ((geschwindigkeit >= 26) && (geschwindigkeit <= 30)) {
+					} else if ((nachAbzug >= 26) && (nachAbzug <= 30) && (anzahl.equalsIgnoreCase("j"))){
+						buﬂgeld = 100;
+						punkte = 1;
+					
+					}  else if ((nachAbzug >= 26) && (nachAbzug <= 30) && (anzahl.equalsIgnoreCase("n"))) {
 						buﬂgeld = 100;
 						punkte = 1;
 						fahrverbot = 1; // wenn innherhalb 12 monate 2 mal
-						
-					} else if ((geschwindigkeit >= 31) && (geschwindigkeit <= 40)) {
+					
+					} else if ((nachAbzug >= 31) && (nachAbzug <= 40)) {
 						buﬂgeld = 160;
 						punkte = 2;
 						fahrverbot = 1; 
 						
-					} else if ((geschwindigkeit >= 41) && (geschwindigkeit <= 50)) {
+					} else if ((nachAbzug >= 41) && (nachAbzug <= 50)) {
 						buﬂgeld = 200;
 						punkte = 2;
 						fahrverbot = 1;
 						
-					} else if ((geschwindigkeit >= 51) && (geschwindigkeit <= 60)) {					
+					} else if ((nachAbzug >= 51) && (nachAbzug <= 60)) {					
 						punkte = 2; 
 						fahrverbot = 2;
 						
-					} else if ((geschwindigkeit >= 60) && (geschwindigkeit <= 70)) {
+					} else if ((nachAbzug >= 60) && (nachAbzug <= 70)) {
 						buﬂgeld = 480;
 						punkte = 2;
 						fahrverbot = 3;
 						
 						
-					} else if (geschwindigkeit > 70) {
+					} else if (nachAbzug > 70) {
+						buﬂgeld = 680;
+						punkte = 2;
+						fahrverbot = 3;
+						
+					}
+				}
+				
+				//f¸r pkw, auﬂerorts, ohne anh‰nger
+				if (fahrzeug.equalsIgnoreCase("pkw") && (ort.equalsIgnoreCase("ausﬂerorts") && (anh‰nger.equalsIgnoreCase("n")))) {
+					
+					if ((nachAbzug > 0 ) && (nachAbzug <= 10)) {
+						buﬂgeld = 10;
+						
+						
+					} else if ((nachAbzug >= 11) && (nachAbzug <= 15)) {
+						buﬂgeld = 20;
+						 
+					} else if ((nachAbzug >= 16) && (nachAbzug <= 20)) {
+						buﬂgeld = 30;
+						
+					} else if ((nachAbzug >= 21) && (nachAbzug <= 25)) {
+						buﬂgeld = 70;
+						punkte = 1;
+						
+					} else if ((nachAbzug >= 26) && (nachAbzug <= 30) && (anzahl.equalsIgnoreCase("j"))){
+						buﬂgeld = 80;
+						punkte = 1;
+						
+					} else if ((nachAbzug >= 26) && (nachAbzug <= 30) && (anzahl.equalsIgnoreCase("n"))) {
+						buﬂgeld = 80;
+						punkte = 1;
+						fahrverbot = 1; // wenn innherhalb 12 monate 2 mal
+						
+					} else if ((nachAbzug >= 31) && (nachAbzug <= 40) && (anzahl.equalsIgnoreCase("j"))){
+						buﬂgeld = 120;
+						punkte = 1;
+						
+					} else if ((nachAbzug >= 31) && (nachAbzug <= 40) && (anzahl.equalsIgnoreCase("n"))){
+						buﬂgeld = 120;
+						punkte = 1;
+						fahrverbot = 1; // wenn innherhalb 12 monate 2 mal
+					
+					} else if ((nachAbzug >= 41) && (nachAbzug <= 50)) {
+						buﬂgeld = 160;
+						punkte = 2;
+						fahrverbot = 1;
+						
+					} else if ((nachAbzug >= 51) && (nachAbzug <= 60)) {
+						buﬂgeld = 240;
+						punkte = 2;
+						fahrverbot = 1;
+						
+					} else if ((nachAbzug >= 60) && (nachAbzug <= 70)) {
+						buﬂgeld = 440;
+						punkte = 2;
+						fahrverbot = 2;
+						
+					} else if (nachAbzug > 70) {
+						buﬂgeld = 600;
+						punkte = 2;
+						fahrverbot = 3;
+						
+					}
+				}
+				
+				//f¸r lkw, innerorts oder pkw, innerorts, mit anh‰nger
+				if ((fahrzeug.equalsIgnoreCase("lkw") && (ort.equalsIgnoreCase("innerorts"))) || (fahrzeug.equalsIgnoreCase("pkw") && (anh‰nger.equalsIgnoreCase("j") && (ort.equalsIgnoreCase("innerorts"))))){
+								
+					if ((nachAbzug > 0 ) && (nachAbzug <= 10)) {
+						buﬂgeld = 20;
+						
+					} else if ((nachAbzug >= 11) && (nachAbzug <= 15)) {
+						buﬂgeld = 30;
+						 
+					} else if ((nachAbzug >= 16) && (nachAbzug <= 20)) {
+						buﬂgeld = 80;
+						punkte = 1;
+						
+					} else if ((nachAbzug >= 21) && (nachAbzug <= 25)) {
+						buﬂgeld = 95;
+						punkte = 1;
+						
+					} else if ((nachAbzug >= 26) && (nachAbzug <= 30)){
+						buﬂgeld = 140;
+						punkte = 2;
+						fahrverbot = 1;
+						
+					} else if ((nachAbzug >= 31) && (nachAbzug <= 40)){
+						buﬂgeld = 200;
+						punkte = 2;
+						fahrverbot = 1; 
+					
+					} else if ((nachAbzug >= 41) && (nachAbzug <= 50)) {
+						buﬂgeld = 280;
+						punkte = 2;
+						fahrverbot = 2;
+						
+					} else if ((nachAbzug >= 51) && (nachAbzug <= 60)) {
+						buﬂgeld = 480;
+						punkte = 2;
+						fahrverbot = 3;
+						
+					} else if (nachAbzug > 70) {
 						buﬂgeld = 680;
 						punkte = 2;
 						fahrverbot = 3;
@@ -221,48 +346,43 @@ public class Buﬂgeldkatalog {
 					
 				}
 				
-				if (ort.equals("Auﬂerorts") || (ort.equals("auﬂerorts") || (ort.equals("Auserorts") || (ort.equals("Auserorts"))))) {
+				//f¸r lkw, auﬂerorts oder pkw, auﬂerorts, mit anh‰nger
+				if ((fahrzeug.equalsIgnoreCase("lkw") && (ort.equalsIgnoreCase("auﬂerorts"))) || (fahrzeug.equalsIgnoreCase("pkw") && (anh‰nger.equalsIgnoreCase("j") && (ort.equalsIgnoreCase("auﬂerorts"))))){
 					
-					if ((geschwindigkeit > 0 ) && (geschwindigkeit <= 10)) {
-						buﬂgeld = 10;
+					if ((nachAbzug > 0 ) && (nachAbzug <= 10)) {
+						buﬂgeld = 15;
 						
-						
-					} else if ((geschwindigkeit >= 11) && (geschwindigkeit <= 15)) {
-						buﬂgeld = 20;
+					} else if ((nachAbzug >= 11) && (nachAbzug <= 15)) {
+						buﬂgeld = 25;
 						 
-					} else if ((geschwindigkeit >= 16) && (geschwindigkeit <= 20)) {
-						buﬂgeld = 30;
-						
-					} else if ((geschwindigkeit >= 21) && (geschwindigkeit <= 25)) {
+					} else if ((nachAbzug >= 16) && (nachAbzug <= 20)) {
 						buﬂgeld = 70;
 						punkte = 1;
 						
-					} else if ((geschwindigkeit >= 26) && (geschwindigkeit <= 30)) {
+					} else if ((nachAbzug >= 21) && (nachAbzug <= 25)) {
 						buﬂgeld = 80;
 						punkte = 1;
-						fahrverbot = 1; // wenn innherhalb 12 monate 2 mal
 						
-					} else if ((geschwindigkeit >= 31) && (geschwindigkeit <= 40)) {
-						buﬂgeld = 120;
+					} else if ((nachAbzug >= 26) && (nachAbzug <= 30)){
+						buﬂgeld = 95;
 						punkte = 1;
-						fahrverbot = 1; // wenn innherhalb 12 monate 2 mal
 						
-					} else if ((geschwindigkeit >= 41) && (geschwindigkeit <= 50)) {
+					} else if ((nachAbzug >= 31) && (nachAbzug <= 40)){
 						buﬂgeld = 160;
 						punkte = 2;
-						fahrverbot = 1;
-						
-					} else if ((geschwindigkeit >= 51) && (geschwindigkeit <= 60)) {
+						fahrverbot = 1; 
+					
+					} else if ((nachAbzug >= 41) && (nachAbzug <= 50)) {
 						buﬂgeld = 240;
 						punkte = 2;
 						fahrverbot = 1;
 						
-					} else if ((geschwindigkeit >= 60) && (geschwindigkeit <= 70)) {
+					} else if ((nachAbzug >= 51) && (nachAbzug <= 60)) {
 						buﬂgeld = 440;
 						punkte = 2;
 						fahrverbot = 2;
 						
-					} else if (geschwindigkeit > 70) {
+					} else if (nachAbzug > 70) {
 						buﬂgeld = 600;
 						punkte = 2;
 						fahrverbot = 3;
@@ -271,27 +391,36 @@ public class Buﬂgeldkatalog {
 				}
 				
 				//Ausgaben
+				
+				//Ausgabe f¸hrerschein entzug
 				if (punkte == 8) {
 					System.out.println("Sie haben, " + ort + " die Geschwindigkeit um, " + geschwindigkeit + " km/h ¸berschritten. \n "
-							+ "Sie m¸ssen ein Buﬂgeld von: " + buﬂgeld + " Ä bezahlen, da Sie 8 Punkte haben wird Ihnen die Fahrerlaubnis entzogen");	
-				} 
-				
-				if ((geschwindigkeit >= 21) && (geschwindigkeit <= 25)) {
-					System.out.println("Sie haben, " + ort + " die Geschwindigkeit um, " + geschwindigkeit + " km/h ¸berschritten. \n "
-							+ "Sie m¸ssen ein Buﬂgeld von: " + buﬂgeld + " Ä bezahlen, zus‰tzlich erhalten Sie " + punkte + "Punkt");
-				
-				} 
-				
-				else if (geschwindigkeit >=26 ) {
-					System.out.println("Sie haben, " + ort + " die Geschwindigkeit um, " + geschwindigkeit + " km/h ¸berschritten. \n "
-							+ "Sie m¸ssen ein Buﬂgeld von: " + buﬂgeld + " Ä bezahlen, zus‰tzlich erhalten Sie " + punkte + " Punkt und ein Fahrverbot von " 
-							+ fahrverbot + " Monaten");
-					
-				} else {
-					System.out.println("Sie haben, " + ort + " die Geschwindigkeit um, " + geschwindigkeit + " km/h ¸berschritten. \n "
-							+ "Sie m¸ssen ein Buﬂgeld von: " + buﬂgeld + " Ä bezahlen");	
+							+ "davon wurden " + abzug + " km/h Toleranz abgezogen." + " Sie m¸ssen ein Buﬂgeld von: " + buﬂgeld + 
+							" Ä bezahlen, da Sie 8 Punkte haben wird Ihnen die Fahrerlaubnis entzogen");	
 				}
 				
+				//Ausgabe f¸r lkw / anh‰nger 
+				
+				//Ausgabe f¸r pkw
+				
+				System.out.println("Sie haben, " + ort + " die Geschwindigkeit um, " + geschwindigkeit + " km/h ¸berschritten. \n " 
+						+ " Davon werden " + abzug + " km/h Toleranz abgezogen. \n" + "Sie m¸ssen ein Buﬂgeld von: " + buﬂgeld + " Ä bezahlen");
+				
+				//Ausgabe probezeit
+				if (probeZeit.equalsIgnoreCase("j") && (buﬂgeld >= 60)) {
+					System.out.println("Zus‰tzlich wurde Ihre Probezeit um weitere 2 Jahre verl‰ngert !");
+				}
+				
+				if (probeZeit.equalsIgnoreCase("j") && (nachAbzug >= 20)) {
+					System.out.println("Ihre Probezeit wird um 2 Jahre verl‰ngert, zus‰tzlich wird Ihnen ein Aufbauseminar angeordnet !");
+				}
+				
+				if (probeZeit.equalsIgnoreCase("j") && (anzahl.equalsIgnoreCase("n") && (nachAbzug >= 20))) {
+					System.out.println("Ihnen wird die Fahrerlaubnis entzogen !");
+				}
+				
+				
+			
 			} catch (Exception X) {
 				System.out.println("Fehler");
 			}
