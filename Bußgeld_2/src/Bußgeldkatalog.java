@@ -399,12 +399,29 @@ public class Bußgeldkatalog {
 							" € bezahlen, da Sie 8 Punkte haben wird Ihnen die Fahrerlaubnis entzogen");	
 				}
 				
-				//Ausgabe für lkw / anhänger 
+				//Ausgabe für lkw 
+				if (fahrzeug.equalsIgnoreCase("lkw")) {
+					System.out.println("Sie haben, mit Ihrem LKW, " + ort + " die Geschwindigkeit um, " + geschwindigkeit + " km/h überschritten. \n " 
+							+ " Davon werden " + abzug + " km/h Toleranz abgezogen. \n" + "Sie müssen ein Bußgeld von: " + bußgeld + " € bezahlen \n "
+									+ "Zusätzlich erhalten Sie auf grund Ihres verstoßen ein Fahrverbot von " + fahrverbot + " Monaten." 
+									+ "Sowie " + punkte + " Punkte");
+				}
+				
+				//Ausgaben pkw + anhänger
+				if (fahrzeug.equalsIgnoreCase("pkw") && (anhänger.equalsIgnoreCase("j"))) {
+					System.out.println("Sie haben, mit Ihrem PKW und Anhänger, " + ort + " die Geschwindigkeit um, " + geschwindigkeit + " km/h überschritten. \n " 
+							+ " Davon werden " + abzug + " km/h Toleranz abgezogen. \n" + "Sie müssen ein Bußgeld von: " + bußgeld + " € bezahlen \n "
+									+ "Zusätzlich erhalten Sie auf grund Ihres verstoßen ein Fahrverbot von " + fahrverbot + " Monaten." 
+									+ "Sowie " + punkte + " Punkte");
+				}
 				
 				//Ausgabe für pkw
-				
-				System.out.println("Sie haben, " + ort + " die Geschwindigkeit um, " + geschwindigkeit + " km/h überschritten. \n " 
-						+ " Davon werden " + abzug + " km/h Toleranz abgezogen. \n" + "Sie müssen ein Bußgeld von: " + bußgeld + " € bezahlen");
+				if (fahrzeug.equalsIgnoreCase("pkw")) {
+					System.out.println("Sie haben, mit Ihrem PKW, " + ort + " die Geschwindigkeit um, " + geschwindigkeit + " km/h überschritten. \n " 
+							+ " Davon werden " + abzug + " km/h Toleranz abgezogen. \n" + "Sie müssen ein Bußgeld von: " + bußgeld + " € bezahlen \n "
+									+ "Zusätzlich erhalten Sie auf grund Ihres verstoßen ein Fahrverbot von " + fahrverbot + " Monaten." 
+									+ "Sowie " + punkte + " Punkte");
+				}
 				
 				//Ausgabe probezeit
 				if (probeZeit.equalsIgnoreCase("j") && (bußgeld >= 60)) {
